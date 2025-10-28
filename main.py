@@ -1,6 +1,8 @@
 import subprocess
+from colorama import Fore, Back
 
-menu = input("Menu:\n1. Start conversation\n2. Connect to a conversation\nChoose an option (1 or 2): ")
+print(f"{Fore.BLACK}{Back.GREEN}Menu:\n1. Connect to a conversation\n2. Start a conversation\nChoose an option (1 or 2): ")
+menu = input(f"{Fore.RESET}{Back.RESET}\n")
 
 if menu == "1":
     subprocess.run(["python", "server.py"])
