@@ -1,6 +1,13 @@
 # Messaging_Service
-## Current Overview
-Currently, this program works as a fully functioning messaging system. It can send and receive messages locally, using a WiFi router.
+## Overview
+Currently, this program works as a fully functioning messaging system. It can send and receive messages locally using a WiFi router.
 
-## Aims and Objectives
-When this project is finished, I would like the messages to be hashed and salted, and I would like messages to be sent via the Internet. I would also like to encorperate Rust into this project, to get an excecutable file. I think that all of this will make this program usable and helpful to the public. 
+## Updates
+- Executable file
+- Errors logged
+- Better error handling
+
+## Use this Program
+If you want to use this program, please contact me (https://github.com/Pitcher4#contact-me) for excecutable file. 
+
+Please note: excecutable file is under the same licence as this repostory (GNU AFFERO GENERAL PUBLIC LICENSE version 3). 
