@@ -2,6 +2,7 @@ import socket # handles sending and receiving data
 from colorama import Fore, Back # to colour text
 import subprocess # to run other scripts
 import logging # to log errors
+from encryption import Encryption
 
 IP = input(f"{Fore.YELLOW}Enter IP address: {Fore.RESET}") # IP adress for WiFi
 PORT = 50501 
@@ -13,14 +14,30 @@ while True:
         client.connect((IP, PORT))
         print(f"{Fore.YELLOW}Broadcasting message on {IP}:{PORT}{Fore.RESET}") # TODO add dot animation here
 
+        # sends public key to server
+        client.send(Encryption().public_key_pem)
+
+        # receives public key from server
+        server_public_key_pem = client.recv(2048)
+        Encryption().load_peer_public_key(server_public_key_pem)
+
+        # creates a random AES session key and send it (encrypted)
+        encrypted_session_key = Encryption().encrypt_for_peer(Encryption().session_key)
+        client.send(encrypted_session_key)
+
+        print(f"{Fore.GREEN}Secure session established.{Fore.RESET}\n")
+
         # starts chat loop
         while True:
             msg = input(f"{Fore.BLUE}You: ") # users message they are sending
-            client.send(msg.encode()) # sends message by encoding message into binary first
+            encrypted_msg = Encryption().encrypt_message(msg)
+            client.send(encrypted_msg.encode()) # sends message by encoding message into binary first
 
-            data = client.recv(1024).decode() # decodes the message and stores it
-            print(Fore.WHITE + data) # outputs the data
+            encrypted_msg_in = client.recv(4096).decode() # decodes the message out of bin (does not decrypt)
+            msg_in = Encryption().decrypt_message(encrypted_msg_in) # decrypts message
+            print(Fore.WHITE + msg_in) # outputs decrypted message in
 
+# error handling
     # handle invalid IP address error
     except OSError as e:
         open("errors.txt", "a").write(str(e) + "\n") # opens/creates error log, appends error to file, automatically closes file
